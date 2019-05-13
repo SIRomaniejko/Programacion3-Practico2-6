@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Main {
 
@@ -12,7 +14,7 @@ public class Main {
 		navidad.insert(9);
 		navidad.insert(6);
 		navidad.insert(8);
-		MyLinkedList listaLoca = navidad.getFrontera();
+		ArrayList<Integer> listaLoca = navidad.getFrontera();
 		for(Object value: listaLoca){
 			System.out.println(value);
 		}

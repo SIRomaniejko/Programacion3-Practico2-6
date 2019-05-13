@@ -1,8 +1,4 @@
-import java.awt.List;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 
 public class ArbolBinario {
 	
@@ -15,75 +11,82 @@ public class ArbolBinario {
 		return root.getValue();
 	}
 	
-	public boolean hasElement(Object element){
-		return root.hasElement(element);
+	public boolean hasElement(int element){
+		return this.hasElement(this.root, element);
+	}
+	
+	private boolean hasElement(NodoArbolBinario nodo, int element){
+		if(nodo.equals(element)){
+			return true;
+		}
+		else{
+			if(this.hasElement(nodo.getLeft(), element) || this.hasElement(nodo.getRight(), element)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public boolean isEmpty(){
 		return root == null;
 	}
 	
-	public void insert(Object value){
+	public void insert(int value){
 		if(isEmpty()){
 			root = new NodoArbolBinario(value);
 		}
 		else{
-			root.insert(value);			
+			NodoArbolBinario nodoActual = root;
+			boolean terminado = false;
+			while(!terminado){
+				int comparacion = nodoActual.compare(value);
+				if(comparacion < 0){
+					if(!nodoActual.hasLeft()){
+						nodoActual.setLeft(value);
+						terminado = true;
+					}
+					else{
+						nodoActual = nodoActual.getLeft();
+					}
+				}
+				else if(comparacion > 0){
+					if(!nodoActual.hasRight()){
+						nodoActual.setRight(value);
+						terminado = true;
+					}
+					else{
+						nodoActual = nodoActual.getRight();
+					}
+				}
+				else{
+					terminado = true;
+				}
+			}
 		}
 	}
 	
-	public boolean delete(Object value){
-		return true;
-	}
-	
-	public int getHeight(){
-		if(!isEmpty()){
-			return root.getHeight();
-		}
-		else{
-			return 0;
-		}
-	}
-	
-	public void printPosOrder(){
-		
-	}
-	
-	public void printPreOrder(){
-		
-	}
-	
-	public void printInOrder(){
-		
-	}
-	
-	public MyLinkedList getLongestBranch(){
+	public ArrayList<Integer> getFrontera(){
 		if(isEmpty()){
 			return null;
 		}
 		else{
-			return root.getLongestBranch();
+			ArrayList<Integer> frontera = new ArrayList<Integer>();
+			this.recorrerFrontera(frontera, this.root);
+			return frontera;
 		}
 	}
 	
-	public MyLinkedList getFrontera(){
-		if(isEmpty()){
-			return null;
+	private void recorrerFrontera(ArrayList<Integer> frontera, NodoArbolBinario nodoActual){
+		if(nodoActual.isLeaf()){
+			frontera.add(nodoActual.getValue());
 		}
 		else{
-			return root.getFrontera();
+			if(nodoActual.hasLeft()){
+				recorrerFrontera(frontera, nodoActual.getLeft());
+			}
+			if(nodoActual.hasRight()){
+				recorrerFrontera(frontera, nodoActual.getRight());
+			}
 		}
-	}
-	
-	public NodoArbolBinario testtest(){
-		return root;
-	}
-	
-	public Object getMaxElement(){
-		return root.getMaxElement();
-	}
-	
-	public MyLinkedList getElementsAtLevel(int level){
-		return root.getElementsAtLevel(level, 1);
 	}
 }
